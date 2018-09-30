@@ -1,0 +1,50 @@
+{
+  "name": "zcomjs-ws",
+  "version": "0.1.2",
+  "description": "Pure JavaScript Zcom websocket interface for node.js and browsers.",
+  "browser": {
+    "ws": false
+  },
+  "scripts": {
+    "clean": "rm -rf ./cjs/* & rm -rf ./build/* & rm -rf ./es/*",
+    "prebuild": "npm run clean",
+    "build": "BABEL_ENV=cjs babel lib --out-dir cjs",
+    "build-es": "BABEL_ENV=es babel ./lib -d es",
+    "postbuild": "npm run browserify && npm run build-es",
+    "prepublish": "npm run build",
+    "browserify": "NODE_ENV=production browserify cjs/src/ApiInstances.js --standalone bitshares_ws -o build/zcomjs-ws.js -d",
+    "postbrowserify": "NODE_ENV=production uglifyjs --compress --mangle --sequences --drop_console --mangle-props --screw-ie8 --output build/zcomjs-ws.min.js -- build/zcomjs-ws.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zcom-project/zcomjs-ws.git"
+  },
+  "author": "Zcom project",
+  "contributors": [
+    "Zcom dev"
+  ],
+  "license": "BSD-2-Clause-FreeBSD",
+  "bugs": {
+    "url": "https://github.com/zcom-project/zcomjs-ws/issues"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "main": "cjs/index.js",
+  "jsnext:main": "es/index.js",
+  "dependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "ws": "4.1.0"
+  },
+  "devDependencies": {
+    "assert": "^1.3.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-1": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.3",
+    "http-server": "^0.11.1",
+    "mocha": "^5.2.0",
+    "uglify-js": "^3.4.9"
+  }
+}
